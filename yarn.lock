@@ -448,7 +448,7 @@ __metadata:
   dependencies:
     atob: ^2.1.2
     body-parser: ^1.19.2
-    c-lightning.ts: ^0.0.11
+    c-lightning.ts: ^0.0.12
     chai: ^4.3.6
     chai-http: ^4.3.0
     error: ^10.4.0
@@ -464,10 +464,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"c-lightning.ts@npm:^0.0.11":
-  version: 0.0.11
-  resolution: "c-lightning.ts@npm:0.0.11"
-  checksum: efc5b7d2cef782cf79253e16ceecee0dc01f55c55f075638685c2aaf0bb5108e73fa302a33830ce9de385fd951bf7696f324ae8caf7503bfa078cf73ecabf0e8
+"c-lightning.ts@npm:^0.0.12":
+  version: 0.0.12
+  resolution: "c-lightning.ts@npm:0.0.12"
+  checksum: cdbc02e5f9a67788bd66b546d6bc0664f1c7fa79b626065ba0bbdccecf2e948a36a86927698be5fbe795709bbbdb9d4502986f4382688702c3668a5c6c8921da
   languageName: node
   linkType: hard
 
