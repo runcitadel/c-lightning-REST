@@ -6,3 +6,9 @@ certs/access.macaroon
 certs/rootKey.key
 cl-rest-config.json
 test/postTest.js
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
