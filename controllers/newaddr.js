@@ -38,11 +38,7 @@ exports.newAddr = (req,res) => {
 
     //Call the newaddr command
     ln.newaddr(addressType).then(data => {
-        var addr = "";
-        if(addressType === 'p2sh-segwit')
-            addr = {address: data['p2sh-segwit']}
-        else
-            addr = {address: data.bech32}
+        var addr = {address: data};
         global.logger.log('address -> '+ addr.address);
         res.status(200).json(addr);
     }).catch(err => {

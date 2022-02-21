@@ -2,6 +2,7 @@ const app = require('express')();
 const bodyparser = require('body-parser');
 let configFile = './cl-rest-config.json';
 fs = require('fs');
+const { default: RpcClient } = require("c-lightning.ts/cjs/index.cjs");
 
 function prepDataForLogging(msg) {
   return typeof msg === 'string' ? msg : JSON.stringify(msg)
@@ -35,7 +36,7 @@ global.logger = configLogger(global.config);
 
 //LN_PATH is the path containing lightning-rpc file
 let lnpath = (global.config.LNRPCPATH && global.config.LNRPCPATH.trim() !== '') ? global.config.LNRPCPATH.trim() : process.env.LN_PATH;
-global.ln = require('./lightning-client-js')(lnpath);
+global.ln = new RpcClient(lnpath);
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use((req, res, next) => {

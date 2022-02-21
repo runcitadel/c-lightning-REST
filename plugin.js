@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-const Plugin = require('clightningjs');
+const { Plugin } = require('c-lightning.ts/cjs/index.cjs');
 let srvr;
 let updatedMessage = { event: '', data: '' };
 
-const restPlugin = new Plugin();
+const restPlugin = new Plugin({ compatMode: true });
 
 restPlugin.addOption('rest-port', 3001, 'rest plugin listens on this port', 'int');
 restPlugin.addOption('rest-docport', 4001, 'rest plugin listens on this port', 'int');
