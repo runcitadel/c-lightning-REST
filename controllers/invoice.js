@@ -74,13 +74,15 @@ exports.genInvoice = (req,res) => {
     var fallback = null;
     var preimage = null;
 
-    ln.invoice(msatoshi=amount,
-    label=label,
-    description=desc,
-    expiry=expiry,
-    fallback=fallback,
-    preimage=preimage,
-    exposeprivatechannels=exposePvt).then(data => {
+    ln.invoice({
+        msatoshi: amount,
+        label,
+        description: desc,
+        expiry,
+        fallback,
+        preimage,
+        exposeprivatechannels: exposePvt
+    }).then(data => {
         global.logger.log('bolt11 -> '+ data.bolt11);
         global.logger.log('genInvoice success');
         res.status(201).json(data);
@@ -164,7 +166,7 @@ exports.listInvoice = (req,res) => {
     {
         //var label = req.params.label;
         //Call the listinvoice command with label
-        ln.listinvoices(req.query.label).then(data => {
+        ln.listinvoices({ label: req.query.label }).then(data => {
             if(Object.keys(data.invoices).length)
                 global.logger.log('bolt11 -> '+ data.invoices[0].bolt11);
             global.logger.log('listInvoice success');
@@ -219,7 +221,7 @@ exports.delExpiredInvoice = (req,res) => {
     {
         //var maxexpiry = req.params.maxexpiry;
         //Call the delexpiredinvoice command with maxexpiry
-        ln.delexpiredinvoice(req.query.maxexpiry).then(data => {
+        ln.delexpiredinvoice({ maxexpirytime: req.query.maxexpiry }).then(data => {
             res.status(202).json(data);
         }).catch(err => {
             global.logger.warn(err);
@@ -274,7 +276,7 @@ exports.delInvoice = (req,res) => {
     function connFailed(err) { throw err }
     ln.on('error', connFailed);
 
-    ln.delinvoice(req.params.label, req.params.status).then(data => {
+    ln.delinvoice({ label: req.params.label, status: req.params.status }).then(data => {
         res.status(202).json(data);
     }).catch(err => {
         global.logger.warn(err);
@@ -351,7 +353,7 @@ exports.waitInvoice = (req,res) => {
     function connFailed(err) { throw err }
     ln.on('error', connFailed);
 
-    ln.waitinvoice(req.params.label).then(data => {
+    ln.waitinvoice({ label: req.params.label }).then(data => {
         global.logger.log('waitInvoice successful');
         res.status(200).json(data);
     }).catch(err => {

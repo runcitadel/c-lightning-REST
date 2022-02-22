@@ -70,11 +70,13 @@ exports.withdraw = (req,res) => {
     var utxos = (req.body.utxos) ? req.body.utxos : null; //coin selection
 
     //Call the withdraw function with the address provided
-    ln.withdraw(destination=address,
-        satoshi=satoshis,
-        feerate=feerate,
-        minconf=minconf,
-        utxos=utxos).then(data => {
+    ln.withdraw({
+        destination: address,
+        satoshi: satoshis,
+        feerate,
+        minconf,
+        utxos
+    }).then(data => {
         global.logger.log('withdraw success');
         res.status(201).json(data);
     }).catch(err => {

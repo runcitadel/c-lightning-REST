@@ -121,19 +121,20 @@ exports.offer = (req,res) => {
     var sngl_use = (req.body.single_use === '0' || req.body.single_use === 'false' || !req.body.single_use) ? false : true;
 
     //Call the fundchannel command with the pub key and amount specified
-    ln.offer(amount=amnt,
-        description=desc,
-        vendor=vndr,
-        label=lbl,
-        quantity_min=qty_min,
-        quantity_max=qty_max,
-        absolute_expiry=abs_expry,
-        recurrence=rcrnc,
-        recurrence_base=rcrnc_base,
-        recurrence_paywindow=rcrnc_wndw,
-        recurrence_limit=rcrnc_lmt,
-        single_use=sngl_use
-        ).then(data => {
+    ln.offer({
+        amount: amnt,
+        description: desc,
+        vendor: vndr,
+        label: lbl,
+        quantity_min: qty_min,
+        quantity_max: qty_max,
+        absolute_expiry: abs_expry,
+        recurrence: rcrnc,
+        recurrence_base: rcrnc_base,
+        recurrence_paywindow: rcrnc_wndw,
+        recurrence_limit: rcrnc_lmt,
+        single_use: sngl_use
+    }).then(data => {
         global.logger.log('offer creation success');
         res.status(201).json(data);
     }).catch(err => {
@@ -203,10 +204,10 @@ exports.listOffers = (req,res) => {
     var actvonly = (req.query.active_only === '0' || req.query.active_only === 'false' || !req.query.active_only) ? false : true;
 
     //Call the listforwards command
-    ln.listoffers(
-        offer_id=offrid,
-        active_only=actvonly
-    ).then(data => {
+    ln.listoffers({
+        offer_id: offrid,
+        active_only: actvonly
+    }).then(data => {
         global.logger.log('listOffers success');
         res.status(200).json(data);
     }).catch(err => {
@@ -330,14 +331,15 @@ exports.fetchInvoice = (req,res) => {
     var tmt = (req.body.timeout) ? req.body.timeout: null;
 
     //Call the fetchinvoice command with the offer and amount if specified
-    ln.fetchinvoice(offer=offr,
-        msatoshi=msats,
-        quantity=qty,
-        recurrence_counter=rcrnc_cntr,
-        recurrence_start=rcrnc_strt,
-        recurrence_label=rcrnc_lbl,
-        timeout=tmt
-        ).then(data => {
+    ln.fetchinvoice({
+        offer: offr,
+        msatoshi: msats,
+        quantity: qty,
+        recurrence_counter: rcrnc_cntr,
+        recurrence_start: rcrnc_strt,
+        recurrence_label: rcrnc_lbl,
+        timeout: tmt
+    }).then(data => {
         global.logger.log('fetch invoice creation success');
         res.status(201).json(data);
     }).catch(err => {
@@ -403,7 +405,9 @@ exports.disableOffer = (req,res) => {
     ln.on('error', connFailed);
 
     //Call the close command with the params
-    ln.disableoffer(offer_id=req.params.offerid).then(data => {
+    ln.disableoffer({
+        offer_id: req.params.offerid
+    }).then(data => {
         global.logger.log('disableOffer success');
         res.status(202).json(data);
     }).catch(err => {

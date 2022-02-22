@@ -178,7 +178,7 @@ exports.signMessage = (req,res) => {
     ln.on('error', connFailed);
 
     //Call the signmessage command
-    ln.signmessage(req.body.message).then(data => {
+    ln.signmessage({ message: req.body.message }).then(data => {
         global.logger.log('signmessage success');
         res.status(201).json(data);
     }).catch(err => {
@@ -234,7 +234,10 @@ exports.checkMessage = (req,res) => {
     ln.on('error', connFailed);
 
     //Call the checkmessage command
-    ln.checkmessage(req.params.message, req.params.zbase).then(data => {
+    ln.checkmessage({
+        message: req.params.message,
+        zbase: req.params.zbase
+    }).then(data => {
         global.logger.log('checkmessage success');
         res.status(200).json(data);
     }).catch(err => {
@@ -277,7 +280,9 @@ exports.decode = (req,res) => {
     ln.on('error', connFailed);
 
     //Call the checkmessage command
-    ln.decode(req.params.invoiceString).then(data => {
+    ln.decode({
+        string: req.params.invoiceString
+    }).then(data => {
         global.logger.log('decode success');
         res.status(200).json(data);
     }).catch(err => {

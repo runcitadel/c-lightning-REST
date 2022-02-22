@@ -80,12 +80,14 @@ exports.openChannel = (req,res) => {
     var utxos = (req.body.utxos) ? req.body.utxos : null; //coin selection
 
     //Call the fundchannel command with the pub key and amount specified
-    ln.fundchannel(id=id,
-        satoshi=satoshis,
-        feerate=feerate,
-        announce=announce,
-        minconf=minconf,
-        utxos=utxos).then(data => {
+    ln.fundchannel({
+        id,
+        satoshi: satoshis,
+        feerate,
+        announce,
+        minconf,
+        utxos
+    }).then(data => {
         global.logger.log('fundchannel success');
         res.status(201).json(data);
     }).catch(err => {
@@ -280,7 +282,7 @@ exports.setChannelFee = (req,res) => {
 
     //Call the setchannelfee command with the params
     global.logger.log(req.body);
-    ln.setchannelfee(id, base, ppm).then(data => {
+    ln.setchannelfee({ id, base, ppm }).then(data => {
         global.logger.log('setChannelfee success');
         global.logger.log(data);
         res.status(201).json(data);
@@ -354,10 +356,12 @@ exports.closeChannel = (req,res) => {
     var feeNegStep = (req.query.feeNegotiationStep) ? req.query.feeNegotiationStep : null;
 
     //Call the close command with the params
-    ln.close(id=id,
-        unilaterlaltimeout=unltrltmt,
-        destination=dstntn,
-        fee_negotiation_step=feeNegStep).then(data => {
+    ln.close({
+        id: id,
+        unilaterlaltimeout: unltrltmt,
+        destination: dstntn,
+        fee_negotiation_step: feeNegStep
+    }).then(data => {
         global.logger.log('closeChannel success');
         res.status(202).json(data);
     }).catch(err => {
@@ -588,7 +592,7 @@ exports.listForwardsFilter = (req,res) => {
 //Function to fetch the alias for peer
 getAliasForPeer = (peer) => {
     return new Promise(function(resolve, reject) {
-        ln.listnodes(peer.id).then(data => {
+        ln.listnodes({ id: peer.id }).then(data => {
             peer.alias = data.nodes[0] ? data.nodes[0].alias : '';
             resolve(peer);
         }).catch(err => {

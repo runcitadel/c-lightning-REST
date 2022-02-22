@@ -58,13 +58,13 @@ exports.getRoute = (req,res) => {
     function connFailed(err) { throw err }
     ln.on('error', connFailed);
     const id = req.params.pubKey;
-    const msatoshis = req.params.msats;
+    const msatoshi = req.params.msats;
     const rf = 0;
     if(req.query.riskFactor)
         rf = req.query.riskFactor;
 
     //Call the getroute command
-    ln.getroute(id, msatoshis, rf).then(data => {
+    ln.getroute({ id, msatoshi, riskfactor: rf }).then(data => {
         Promise.all(
             data.route.map(rt => {
               return getAliasForRoute(rt);
@@ -81,7 +81,7 @@ exports.getRoute = (req,res) => {
 //Function to fetch the alias for route
 getAliasForRoute = (singleroute) => {
     return new Promise(function(resolve, reject) {
-        ln.listnodes(singleroute.id).then(data => {
+        ln.listnodes({ id: singleroute.id }).then(data => {
             singleroute.alias = data.nodes[0].alias;
             resolve(singleroute);
         }).catch(err => {
@@ -156,7 +156,7 @@ exports.listNode = (req,res) => {
     ln.on('error', connFailed);
 
     //Call the listnodes command with the params
-    ln.listnodes(req.params.pubKey).then(data => {
+    ln.listnodes({ id: req.params.pubKey }).then(data => {
         global.logger.log('listnodes success');
         res.status(200).json(data.nodes);
     }).catch(err => {
@@ -243,7 +243,7 @@ exports.listChannel = (req,res) => {
     ln.on('error', connFailed);
     global.logger.log(req.params);
     //Call the listchannels command with the params
-    ln.listchannels(req.params.shortChanId).then(data => {
+    ln.listchannels({ short_channel_id: req.params.shortChanId }).then(data => {
         global.logger.log('listchannel network success');
         global.logger.log(data.channels);
         res.status(200).json(data.channels);
@@ -318,7 +318,7 @@ exports.feeRates = (req,res) => {
     ln.on('error', connFailed);
 
     //Call the feerates command with the params
-    ln.feerates(req.params.rateStyle).then(data => {
+    ln.feerates({ style: req.params.rateStyle }).then(data => {
         global.logger.log('feerates success');
         res.status(200).json(data);
     }).catch(err => {

@@ -37,7 +37,7 @@ exports.connectPeer = (req,res) => {
     ln.on('error', connFailed);
 
     //Call the connect command with peer pub key
-    ln.connect(req.body.id).then(data => {
+    ln.connect({ id: req.body.id }).then(data => {
         global.logger.log('id -> '+ data.id);
         global.logger.log('connectPeer success');
         res.status(201).json(data);
@@ -145,7 +145,7 @@ exports.disconnectPeer = (req,res) => {
 
     if(force_flag)
     {
-    ln.disconnect(publicKey, force_flag).then(data => {
+    ln.disconnect({ id: publicKey, force: force_flag }).then(data => {
         global.logger.log('force disconnectPeer success');
         res.status(202).json(data);
     }).catch(err => {
@@ -154,7 +154,7 @@ exports.disconnectPeer = (req,res) => {
     });
     }
     else{
-    ln.disconnect(publicKey).then(data => {
+    ln.disconnect({ id: publicKey }).then(data => {
         global.logger.log('disconnectPeer success');
         res.status(202).json(data);
     }).catch(err => {
@@ -168,7 +168,7 @@ exports.disconnectPeer = (req,res) => {
 //Function to fetch the alias for peer
 getAliasForPeer = (peer) => {
     return new Promise(function(resolve, reject) {
-        ln.listnodes(peer.id).then(data => {
+        ln.listnodes({ id: peer.id }).then(data => {
             peer.alias = data.nodes[0] ? data.nodes[0].alias : '';
             resolve(peer);
         }).catch(err => {

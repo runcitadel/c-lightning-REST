@@ -127,14 +127,16 @@ exports.payInvoice = (req,res) => {
     var exemptfee = (req.body.exemptfee) ? req.body.exemptfee : null;
 
     //Call the pay command
-    ln.pay(bolt11=invoice,
-        msatoshi=msatoshi,
-        label=label,
-        riskfactor=riskfactor,
-        maxfeepercent=maxfeepercent,
-        retry_for=retry_for,
-        maxdelay = maxdelay,
-        exemptfee=exemptfee).then(data => {
+    ln.pay({
+        bolt11: invoice,
+        msatoshi,
+        label,
+        riskfactor,
+        maxfeepercent,
+        retry_for,
+        maxdelay,
+        exemptfee,
+    }).then(data => {
         global.logger.log('pay invoice success');
         res.status(201).json(data);
     }).catch(err => {
@@ -194,7 +196,7 @@ exports.listPays = (req,res) => {
     {
         var invoice = req.query.invoice;
         //Call the listpays command with invoice
-        ln.listpays(invoice).then(data => {
+        ln.listpays({bolt11: invoice}).then(data => {
             global.logger.log('listPays success');
             res.status(200).json(data);
         }).catch(err => {
@@ -291,7 +293,7 @@ exports.listPayments = (req,res) => {
     {
         var invoice = req.query.invoice;
         //Call the listpayments command with invoice
-        ln.listsendpays(invoice).then(data => {
+        ln.listsendpays({bolt11: invoice}).then(data => {
             global.logger.log('listsendpays success');
             res.status(200).json(data);
             }).catch(err => {
@@ -397,7 +399,7 @@ exports.decodePay = (req,res) => {
 
     var invoice = req.params.invoice;
     //Call the decodepay command
-    ln.decodepay(invoice).then(data => {
+    ln.decodepay({bolt11: invoice}).then(data => {
         global.logger.log('decodePay success');
         res.status(200).json(data);
     }).catch(err => {
@@ -527,13 +529,15 @@ exports.keysend = (req,res) => {
     var exemptfee = (req.body.exemptfee) ? req.body.exemptfee : null;
 
     //Call the keysend command
-    ln.keysend(destination=dest,
-        msatoshi=amount_msat,
-        label=label,
-        maxfeepercent=maxfeepercent,
-        retry_for=retry_for,
-        maxdelay = maxdelay,
-        exemptfee=exemptfee).then(data => {
+    ln.keysend({
+        destination: dest,
+        msatoshi: amount_msat,
+        label,
+        maxfeepercent,
+        retry_for,
+        maxdelay,
+        exemptfee
+    }).then(data => {
         global.logger.log('keysend successful');
         res.status(201).json(data);
     }).catch(err => {
@@ -547,7 +551,7 @@ exports.keysend = (req,res) => {
 getMemoForPayment = (payment) => {
     return new Promise(function(resolve, reject) {
     if(payment.bolt11){
-        ln.decodepay(payment.bolt11).then(data => {
+        ln.decodepay({ bolt11: payment.bolt11 }).then(data => {
                 if(data.description)
                     payment.memo = data.description;
             resolve(payment);
