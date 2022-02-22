@@ -36,7 +36,7 @@ global.logger = configLogger(global.config);
 
 //LN_PATH is the path containing lightning-rpc file
 let lnpath = (global.config.LNRPCPATH && global.config.LNRPCPATH.trim() !== '') ? global.config.LNRPCPATH.trim() : process.env.LN_PATH;
-global.ln = new RpcClient(lnpath);
+global.ln = new RpcClient(lnpath, false);
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use((req, res, next) => {
