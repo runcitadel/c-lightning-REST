@@ -71,22 +71,15 @@ exports.openChannel = (req,res) => {
     function connFailed(err) { throw err }
     ln.on('error', connFailed);
     //Set required params
-    var id = req.body.id;
-    var satoshis = req.body.satoshis;
+    let clnReq = { id: req.body.id, satoshi: req.body.satoshis };
     //Set optional params
-    var feerate = (req.body.feeRate) ? req.body.feeRate : null;
-    var announce = (req.body.announce === '0' || req.body.announce === 'false' || !req.body.announce) ? false : true;
-    var minconf = (req.body.minConf) ? req.body.minConf : null;
-    var utxos = (req.body.utxos) ? req.body.utxos : null; //coin selection
+    for (const property of ["feerate", "announce", "minconf", "utxos"]) {
+        if(typeof req.body[property] === "undefined") clnReq[property] = req.body[property];
+    }
 
     //Call the fundchannel command with the pub key and amount specified
     ln.fundchannel({
-        id,
-        satoshi: satoshis,
-        feerate,
-        announce,
-        minconf,
-        utxos
+        ...clnReq,
     }).then(data => {
         global.logger.log('fundchannel success');
         res.status(201).json(data);
@@ -275,14 +268,15 @@ exports.setChannelFee = (req,res) => {
     function connFailed(err) { throw err }
     ln.on('error', connFailed);
     //Set required params
-    var id = req.body.id;
+    let clnReq = { id: req.body.id };
     //Set optional params
-    var base = (req.body.base) ? req.body.base : null;
-    var ppm = (req.body.ppm) ? req.body.ppm : null;
+    for (const property of ["base", "ppm"]) {
+        if(typeof req.body[property] === "undefined") clnReq[property] = req.body[property];
+    }
 
     //Call the setchannelfee command with the params
     global.logger.log(req.body);
-    ln.setchannelfee({ id, base, ppm }).then(data => {
+    ln.setchannelfee({ ...clnReq }).then(data => {
         global.logger.log('setChannelfee success');
         global.logger.log(data);
         res.status(201).json(data);
@@ -348,19 +342,14 @@ exports.closeChannel = (req,res) => {
 
     function connFailed(err) { throw err }
     ln.on('error', connFailed);
-    var id = req.params.id;
-
-    //optional params
-    var unltrltmt = (req.query.unilateralTimeout) ? req.query.unilateralTimeout : null;
-    var dstntn = (req.query.dest) ? req.query.dest : null;
-    var feeNegStep = (req.query.feeNegotiationStep) ? req.query.feeNegotiationStep : null;
+    let clnReq = { id: req.body.id };
+    if(req.query.unilateralTimeout) clnReq.unilaterlaltimeout = req.query.unilateralTimeout;
+    if(req.query.dest) clnReq.destination = req.query.dest;
+    if(req.query.feeNegotiationStep) clnReq.fee_negotiation_step = req.query.feeNegotiationStep;
 
     //Call the close command with the params
     ln.close({
-        id: id,
-        unilaterlaltimeout: unltrltmt,
-        destination: dstntn,
-        fee_negotiation_step: feeNegStep
+        ...clnReq,
     }).then(data => {
         global.logger.log('closeChannel success');
         res.status(202).json(data);

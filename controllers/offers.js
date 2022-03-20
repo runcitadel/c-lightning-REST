@@ -106,33 +106,16 @@ exports.offer = (req,res) => {
     function connFailed(err) { throw err }
     ln.on('error', connFailed);
     //Set required params
-    var amnt = req.body.amount;
-    var desc = req.body.description;
+    const clnReq = { amount: req.body.amount, description: req.body.description };
     //Set optional params
-    var vndr = (req.body.vendor) ? req.body.vendor : null;
-    var lbl = (req.body.label) ? req.body.lable : null;
-    var qty_min = (req.body.quantity_min) ? req.body.quantity_min : null;
-    var qty_max = (req.body.quantity_max) ? req.body.quantity_max : null;
-    var abs_expry = (req.body.absolute_expiry) ? req.body.absolute_expiry : null;
-    var rcrnc = (req.body.recurrence) ? req.body.recurrence : null;
-    var rcrnc_base = (req.body.recurrence_base) ? req.body.recurrence_base : null;
-    var rcrnc_wndw = (req.body.recurrence_paywindow) ? req.body.recurrence_paywindow : null;
-    var rcrnc_lmt = (req.body.recurrence_limit) ? req.body.recurrence_limit : null;
+    for (const property of ["vendor", "label", "quantity_min", "quantity_max", "absolute_expiry", "recurrence", "recurrence_base", "recurrence_paywindow", "recurrence_limit"]) {
+        if(typeof req.body[property] === "undefined") clnReq[property] = req.body[property];
+    }
     var sngl_use = (req.body.single_use === '0' || req.body.single_use === 'false' || !req.body.single_use) ? false : true;
 
     //Call the fundchannel command with the pub key and amount specified
     ln.offer({
-        amount: amnt,
-        description: desc,
-        vendor: vndr,
-        label: lbl,
-        quantity_min: qty_min,
-        quantity_max: qty_max,
-        absolute_expiry: abs_expry,
-        recurrence: rcrnc,
-        recurrence_base: rcrnc_base,
-        recurrence_paywindow: rcrnc_wndw,
-        recurrence_limit: rcrnc_lmt,
+        ...clnReq,
         single_use: sngl_use
     }).then(data => {
         global.logger.log('offer creation success');
@@ -203,9 +186,9 @@ exports.listOffers = (req,res) => {
     var offrid = (req.query.offer_id) ? req.query.offer_id : null;
     var actvonly = (req.query.active_only === '0' || req.query.active_only === 'false' || !req.query.active_only) ? false : true;
 
-    //Call the listforwards command
+    //Call the listoffers command
     ln.listoffers({
-        offer_id: offrid,
+        ...(offrid ? { offer_id: offrid } : {}),
         active_only: actvonly
     }).then(data => {
         global.logger.log('listOffers success');
@@ -321,24 +304,15 @@ exports.fetchInvoice = (req,res) => {
     function connFailed(err) { throw err }
     ln.on('error', connFailed);
     //Set required params
-    var offr = req.body.offer;
+    let clnReq = { offer: req.body.offer };
     //Set optional params
-    var msats = (req.body.msatoshi) ? req.body.msatoshi : null;
-    var qty = (req.body.quantity) ? req.body.quantity: null;
-    var rcrnc_cntr = (req.body.recurrence_counter) ? req.body.recurrence_counter: null;
-    var rcrnc_strt = (req.body.recurrence_start) ? req.body.recurrence_start: null;
-    var rcrnc_lbl = (req.body.recurrence_label) ? req.body.recurrence_label: null;
-    var tmt = (req.body.timeout) ? req.body.timeout: null;
+    for (const property of ["msatoshi", "quantity", "recurrence_counter", "recurrence_start", "recurrence_label", "timeout"]) {
+        if(typeof req.body[property] === "undefined") clnReq[property] = req.body[property];
+    }
 
     //Call the fetchinvoice command with the offer and amount if specified
     ln.fetchinvoice({
-        offer: offr,
-        msatoshi: msats,
-        quantity: qty,
-        recurrence_counter: rcrnc_cntr,
-        recurrence_start: rcrnc_strt,
-        recurrence_label: rcrnc_lbl,
-        timeout: tmt
+        ...clnReq,
     }).then(data => {
         global.logger.log('fetch invoice creation success');
         res.status(201).json(data);

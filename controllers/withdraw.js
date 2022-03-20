@@ -61,21 +61,17 @@ exports.withdraw = (req,res) => {
 
     function connFailed(err) { throw err }
     ln.on('error', connFailed);
-    //Set required params
-    var address = req.body.address;
-    var satoshis = req.body.satoshis;
+    let clnReq = {};
     //Set optional params
-    var feerate = (req.body.feeRate) ? req.body.feeRate : null;
-    var minconf = (req.body.minConf) ? req.body.minConf : null;
-    var utxos = (req.body.utxos) ? req.body.utxos : null; //coin selection
+    if(req.body.feeRate) clnReq.feerate = req.body.feeRate;
+    if(req.body.minConf) clnReq.minconf = req.body.minConf;
+    if(req.body.utxos) clnReq.utxos = req.body.utxos; //coin selection
 
     //Call the withdraw function with the address provided
     ln.withdraw({
-        destination: address,
-        satoshi: satoshis,
-        feerate,
-        minconf,
-        utxos
+        destination: req.body.address,
+        satoshi: req.body.satoshis,
+        ...clnReq,
     }).then(data => {
         global.logger.log('withdraw success');
         res.status(201).json(data);

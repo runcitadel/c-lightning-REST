@@ -115,27 +115,18 @@ exports.payInvoice = (req,res) => {
 
     function connFailed(err) { throw err }
     ln.on('error', connFailed);
-    //Set required params
-    var invoice = req.body.invoice;
+    let clnReq = {};
     //Set optional params
-    var msatoshi = (req.body.amount) ? req.body.amount : null;
-    var label = (req.body.label) ? req.body.label : null;
-    var riskfactor = (req.body.riskfactor) ? req.body.riskfactor : null;
-    var maxfeepercent = (req.body.maxfeepercent) ? req.body.maxfeepercent : null;
-    var retry_for = (req.body.retry_for) ? req.body.retry_for : null;
-    var maxdelay = (req.body.maxdelay) ? req.body.maxdelay : null;
-    var exemptfee = (req.body.exemptfee) ? req.body.exemptfee : null;
-
+    for (const property of ["label", "riskfactor", "maxfeepercent", "retry_for", "maxdelay", "exemptfee"]) {
+        if(typeof req.body[property] === "undefined") clnReq[property] = req.body[property];
+    }
+    //Set optional params
+    if(req.body.amount) clnReq.msatoshi = req.body.amount;
+    
     //Call the pay command
     ln.pay({
-        bolt11: invoice,
-        msatoshi,
-        label,
-        riskfactor,
-        maxfeepercent,
-        retry_for,
-        maxdelay,
-        exemptfee,
+        bolt11: req.body.invoice,
+        ...clnReq,
     }).then(data => {
         global.logger.log('pay invoice success');
         res.status(201).json(data);
@@ -518,25 +509,17 @@ exports.keysend = (req,res) => {
 
     function connFailed(err) { throw err }
     ln.on('error', connFailed);
-    //Set required params
-    var dest = req.body.pubkey;
-    var amount_msat = req.body.amount;
+    let clnReq = {};
     //Set optional params
-    var label = (req.body.label) ? req.body.label : null;
-    var maxfeepercent = (req.body.maxfeepercent) ? req.body.maxfeepercent : null;
-    var retry_for = (req.body.retry_for) ? req.body.retry_for : null;
-    var maxdelay = (req.body.maxdelay) ? req.body.maxdelay : null;
-    var exemptfee = (req.body.exemptfee) ? req.body.exemptfee : null;
+    for (const property of ["label", "maxfeepercent", "retry_for", "maxdelay", "exemptfee"]) {
+        if(typeof req.body[property] === "undefined") clnReq[property] = req.body[property];
+    }
 
     //Call the keysend command
     ln.keysend({
-        destination: dest,
-        msatoshi: amount_msat,
-        label,
-        maxfeepercent,
-        retry_for,
-        maxdelay,
-        exemptfee
+        destination: req.body.pubkey,
+        msatoshi: req.body.amount,
+        ...clnReq,
     }).then(data => {
         global.logger.log('keysend successful');
         res.status(201).json(data);

@@ -62,26 +62,17 @@ exports.genInvoice = (req,res) => {
     function connFailed(err) { throw err }
     ln.on('error', connFailed);
     //Set required params
-    var amount = req.body.amount;
-    if(req.body.amount == 0)
-        amount = 'any';
-    var label = req.body.label;
-    var desc = req.body.description;
+    const clnReq = {
+        msatoshi: req.body.amount == 0 ? "any" : req.body.amount, 
+        label: req.body.label,
+        description: req.body.description,
+    };
     //Set optional params
-    var expiry = (req.body.expiry) ? req.body.expiry : null;
-    var exposePvt = (req.body.private === '1' || req.body.private === 'true') ? !!req.body.private : null;
-    //Set unexposed params
-    var fallback = null;
-    var preimage = null;
+    if(req.body.expiry) clnReq.expiry = req.body.expiry;
 
     ln.invoice({
-        msatoshi: amount,
-        label,
-        description: desc,
-        expiry,
-        fallback,
-        preimage,
-        exposeprivatechannels: exposePvt
+        ...clnReq,
+        exposeprivatechannels: req.body.private === '1' || req.body.private === 'true',
     }).then(data => {
         global.logger.log('bolt11 -> '+ data.bolt11);
         global.logger.log('genInvoice success');
