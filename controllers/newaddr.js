@@ -36,12 +36,12 @@ exports.newAddr = (req, res) => {
     throw err;
   }
   ln.on("error", connFailed);
-  var addressType = req.query.addrType;
+  const addressType = req.query.addrType;
 
   //Call the newaddr command
   ln.newaddr(addressType)
     .then((data) => {
-      var addr = { address: data };
+      const addr = { address: data };
       global.logger.log("address -> " + addr.address);
       res.status(200).json(addr);
     })

@@ -1,6 +1,6 @@
-var router = require("express").Router();
-var datastoreController = require("../controllers/datastore");
-var tasteMacaroon = require("../utils/tasteMacaroon");
+const router = require("express").Router();
+const datastoreController = require("../controllers/datastore");
+const tasteMacaroon = require("../utils/tasteMacaroon");
 
 //Store data
 router.post("/", tasteMacaroon, datastoreController.dataStore);

@@ -5,14 +5,14 @@ process.env.NODE_ENV = 'test';
 let chai = require('chai');
 let chaiHttp = require('chai-http');
 let configFile = './cl-rest-config.json';
-fs = require( 'fs' );
+const fs = require( 'fs' );
 //let should = chai.should();
-var expect = require('chai').expect;
+const expect = require('chai').expect;
 let macaroonFile = "./certs/access.macaroon";
 
 //Read the macaroon file
-var abc = fs.readFileSync (macaroonFile);
-var macaroon = Buffer.from(abc).toString("base64");
+const abc = fs.readFileSync (macaroonFile);
+const macaroon = Buffer.from(abc).toString("base64");
 
 //Read the config params
 //If the cl-rest server is being run as plugin,

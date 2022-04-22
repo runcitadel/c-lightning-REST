@@ -1,7 +1,7 @@
-var router = require("express").Router();
-var channelController = require("../controllers/channel");
-var localRemoteBalController = require("../controllers/localRemoteBal");
-var tasteMacaroon = require("../utils/tasteMacaroon");
+const router = require("express").Router();
+const channelController = require("../controllers/channel");
+const localRemoteBalController = require("../controllers/localRemoteBal");
+const tasteMacaroon = require("../utils/tasteMacaroon");
 
 //Open Channel
 router.post("/openChannel", tasteMacaroon, channelController.openChannel);

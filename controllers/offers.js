@@ -124,17 +124,16 @@ exports.offer = (req, res) => {
     if (typeof req.body[property] === "undefined")
       clnReq[property] = req.body[property];
   }
-  var sngl_use =
+  const single_use = !(
     req.body.single_use === "0" ||
     req.body.single_use === "false" ||
     !req.body.single_use
-      ? false
-      : true;
+  );
 
   //Call the fundchannel command with the pub key and amount specified
   ln.offer({
     ...clnReq,
-    single_use: sngl_use,
+    single_use,
   })
     .then((data) => {
       global.logger.log("offer creation success");
@@ -205,13 +204,12 @@ exports.listOffers = (req, res) => {
   ln.on("error", connFailed);
 
   //Set optional params
-  var offrid = req.query.offer_id ? req.query.offer_id : null;
-  var actvonly =
+  const offrid = req.query.offer_id ? req.query.offer_id : null;
+  const actvonly = !(
     req.query.active_only === "0" ||
     req.query.active_only === "false" ||
     !req.query.active_only
-      ? false
-      : true;
+  );
 
   //Call the listoffers command
   ln.listoffers({

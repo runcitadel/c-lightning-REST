@@ -198,7 +198,7 @@ exports.listPays = (req, res) => {
   }
   ln.on("error", connFailed);
   if (req.query.invoice) {
-    var invoice = req.query.invoice;
+    const invoice = req.query.invoice;
     //Call the listpays command with invoice
     ln.listpays({ bolt11: invoice })
       .then((data) => {
@@ -298,7 +298,7 @@ exports.listPayments = (req, res) => {
   }
   ln.on("error", connFailed);
   if (req.query.invoice) {
-    var invoice = req.query.invoice;
+    const invoice = req.query.invoice;
     //Call the listpayments command with invoice
     ln.listsendpays({ bolt11: invoice })
       .then((data) => {
@@ -319,7 +319,7 @@ exports.listPayments = (req, res) => {
             return getMemoForPayment(payment);
           })
         )
-          .then(function (paymentsList) {
+          .then((paymentsList) => {
             global.logger.log("listpayments success");
             res.status(200).json({ payments: paymentsList });
           })
@@ -410,7 +410,7 @@ exports.decodePay = (req, res) => {
   }
   ln.on("error", connFailed);
 
-  var invoice = req.params.invoice;
+  const invoice = req.params.invoice;
   //Call the decodepay command
   ln.decodepay({ bolt11: invoice })
     .then((data) => {
@@ -567,7 +567,7 @@ exports.keysend = (req, res) => {
 
 //Function to memo for the payment
 getMemoForPayment = (payment) => {
-  return new Promise(function (resolve, reject) {
+  return new Promise((resolve) => {
     if (payment.bolt11) {
       ln.decodepay({ bolt11: payment.bolt11 })
         .then((data) => {

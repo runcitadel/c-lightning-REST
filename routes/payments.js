@@ -1,6 +1,6 @@
-var router = require("express").Router();
-var paymentsController = require("../controllers/payments");
-var tasteMacaroon = require("../utils/tasteMacaroon");
+const router = require("express").Router();
+const paymentsController = require("../controllers/payments");
+const tasteMacaroon = require("../utils/tasteMacaroon");
 
 //Pay with a Bolt11 invoice
 router.post("/", tasteMacaroon, paymentsController.payInvoice);

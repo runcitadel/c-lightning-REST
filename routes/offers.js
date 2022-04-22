@@ -1,6 +1,6 @@
-var router = require("express").Router();
-var channelController = require("../controllers/offers");
-var tasteMacaroon = require("../utils/tasteMacaroon");
+const router = require("express").Router();
+const channelController = require("../controllers/offers");
+const tasteMacaroon = require("../utils/tasteMacaroon");
 
 //Create Offer
 router.post("/offer", tasteMacaroon, channelController.offer);

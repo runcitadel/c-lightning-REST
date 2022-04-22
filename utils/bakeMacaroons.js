@@ -3,12 +3,12 @@ const crypto = require("crypto");
 
 exports.bakeMcrns = () => {
   try {
-    var location = "c-lightning";
-    var rootKey = crypto.randomBytes(64).toString("hex");
-    var identifier = new Date().toString();
+    const location = "c-lightning";
+    const rootKey = crypto.randomBytes(64).toString("hex");
+    const identifier = new Date().toString();
 
     //Generate Macaroon
-    var accessMacaroon = macaroon.newMacaroon({
+    const accessMacaroon = macaroon.newMacaroon({
       identifier: identifier,
       location: location,
       rootKey: rootKey,

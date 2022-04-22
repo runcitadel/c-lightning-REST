@@ -161,7 +161,6 @@ exports.listInvoice = (req, res) => {
   ln.on("error", connFailed);
 
   if (req.query.label) {
-    //var label = req.params.label;
     //Call the listinvoice command with label
     ln.listinvoices({ label: req.query.label })
       .then((data) => {
@@ -221,7 +220,6 @@ exports.delExpiredInvoice = (req, res) => {
   ln.on("error", connFailed);
 
   if (req.query.maxexpiry) {
-    //var maxexpiry = req.params.maxexpiry;
     //Call the delexpiredinvoice command with maxexpiry
     ln.delexpiredinvoice({ maxexpirytime: req.query.maxexpiry })
       .then((data) => {

@@ -1,6 +1,6 @@
-var router = require("express").Router();
-var invoiceController = require("../controllers/invoice");
-var tasteMacaroon = require("../utils/tasteMacaroon");
+const router = require("express").Router();
+const invoiceController = require("../controllers/invoice");
+const tasteMacaroon = require("../utils/tasteMacaroon");
 
 //Generate bolt11 invoice
 router.post("/genInvoice", tasteMacaroon, invoiceController.genInvoice);

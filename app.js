@@ -1,7 +1,7 @@
 const app = require('express')();
 const bodyparser = require('body-parser');
 let configFile = './cl-rest-config.json';
-fs = require('fs');
+const fs = require('fs');
 const { default: RpcClient } = require("c-lightning.ts/cjs/index.cjs");
 
 function prepDataForLogging(msg) {
@@ -19,13 +19,14 @@ function configLogger(config) {
 if (typeof global.REST_PLUGIN_CONFIG === 'undefined') {
   //Read config file when not running as a plugin
   console.log("Reading config file");
-  let rawconfig = fs.readFileSync(configFile, function (err) {
-    if (err) {
-      console.warn("Failed to read config key");
-      console.error(error);
-      process.exit(1);
-    }
-  });
+  let rawconfig;
+  try {
+    rawconfig = fs.readFileSync(configFile);
+  } catch (error) {
+        console.warn("Failed to read config key");
+        console.error(error);
+        process.exit(1);
+  }
   global.config = JSON.parse(rawconfig);
   global.config.PLUGIN = console;
 } else {

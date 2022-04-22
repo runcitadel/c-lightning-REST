@@ -1,6 +1,6 @@
-var router = require("express").Router();
-var connectPeerController = require("../controllers/peers");
-var tasteMacaroon = require("../utils/tasteMacaroon");
+const router = require("express").Router();
+const connectPeerController = require("../controllers/peers");
+const tasteMacaroon = require("../utils/tasteMacaroon");
 
 //Connect with a new network peer
 router.post("/connect", tasteMacaroon, connectPeerController.connectPeer);

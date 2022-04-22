@@ -104,7 +104,7 @@ exports.listPeers = (req, res) => {
           return getAliasForPeer(peerData);
         })
       )
-        .then(function (peerList) {
+        .then((peerList) => {
           res.status(200).json(peerList);
         })
         .catch((err) => {
@@ -152,11 +152,8 @@ exports.disconnectPeer = (req, res) => {
     throw err;
   }
   ln.on("error", connFailed);
-  var publicKey = req.params.pubKey;
-  var force_flag =
-    req.query.force === "1" || req.query.force === "true"
-      ? !!req.query.force
-      : 0;
+  const publicKey = req.params.pubKey;
+  const force_flag = req.query.force === "1" || req.query.force === "true";
 
   if (force_flag) {
     ln.disconnect({ id: publicKey, force: force_flag })
@@ -184,7 +181,7 @@ exports.disconnectPeer = (req, res) => {
 
 //Function to fetch the alias for peer
 getAliasForPeer = (peer) => {
-  return new Promise(function (resolve, reject) {
+  return new Promise((resolve) => {
     ln.listnodes({ id: peer.id })
       .then((data) => {
         peer.alias = data.nodes[0] ? data.nodes[0].alias : "";

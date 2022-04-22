@@ -71,7 +71,7 @@ exports.getRoute = (req, res) => {
         return getAliasForRoute(rt);
       })
     )
-      .then(function (values) {
+      .then((values) => {
         res.status(200).json(values);
       })
       .catch((err) => {
@@ -83,7 +83,7 @@ exports.getRoute = (req, res) => {
 
 //Function to fetch the alias for route
 getAliasForRoute = (singleroute) => {
-  return new Promise(function (resolve, reject) {
+  return new Promise((resolve) => {
     ln.listnodes({ id: singleroute.id })
       .then((data) => {
         singleroute.alias = data.nodes[0].alias;

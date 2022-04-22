@@ -65,10 +65,12 @@ const options = {
 //Check for and generate access key and macaroon
 if (!fs.existsSync(macaroonFile) || !fs.existsSync(rootKey)) {
   global.logger.log("Generating macaroon file and key");
+  let buns;
   try {
-    var buns = mcrn.bakeMcrns();
+    buns = mcrn.bakeMcrns();
   } catch (error) {
     global.logger.error(error);
+    process.exit(1);
   }
 
   //Write the rootKey.key file
@@ -130,20 +132,20 @@ try {
 docserver = require("http").createServer(docapp);
 
 //Start the server
-server.listen(PORT, function () {
+server.listen(PORT, () => {
   global.logger.warn(
     "--- cl-rest api server is ready and listening on port: " + PORT + " ---"
   );
 });
 
 //Start the docserver
-docserver.listen(DOCPORT, function () {
+docserver.listen(DOCPORT, () => {
   global.logger.warn(
     "--- cl-rest doc server is ready and listening on port: " + DOCPORT + " ---"
   );
 });
 
-exports.closeServer = function () {
+exports.closeServer = () => {
   server.close();
   docserver.close();
 };

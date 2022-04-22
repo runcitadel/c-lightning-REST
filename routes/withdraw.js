@@ -1,6 +1,6 @@
-var router = require("express").Router();
-var withdrawController = require("../controllers/withdraw");
-var tasteMacaroon = require("../utils/tasteMacaroon");
+const router = require("express").Router();
+const withdrawController = require("../controllers/withdraw");
+const tasteMacaroon = require("../utils/tasteMacaroon");
 
 //Withdraw funds on-chain
 router.post("/", tasteMacaroon, withdrawController.withdraw);

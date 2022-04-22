@@ -1,6 +1,6 @@
-var router = require("express").Router();
-var getinfoController = require("../controllers/getinfo");
-var tasteMacaroon = require("../utils/tasteMacaroon");
+const router = require("express").Router();
+const getinfoController = require("../controllers/getinfo");
+const tasteMacaroon = require("../utils/tasteMacaroon");
 
 //Get the basic information from the node
 router.get("/", tasteMacaroon, getinfoController.getinfo);

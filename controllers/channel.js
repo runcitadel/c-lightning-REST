@@ -213,7 +213,7 @@ exports.listChannels = (req, res) => {
           );
           // use the open channel if found, otherwise use the first channel
           const chan = openChan || peer.channels[0];
-          var chanData = {
+          const chanData = {
             id: peer.id,
             connected: peer.connected,
             state: chan.state,
@@ -235,7 +235,7 @@ exports.listChannels = (req, res) => {
           return getAliasForPeer(chanData);
         })
       )
-        .then(function (chanList) {
+        .then((chanList) => {
           global.logger.log("listChannels channel success");
           res.status(200).json(chanList);
         })
@@ -483,11 +483,9 @@ exports.listForwards = (req, res) => {
       if (req.query.status) {
         if (data.forwards.length === 0) res.status(200).json(data.forwards);
         else {
-          let filteredForwards = data.forwards.filter(function (
-            currentElement
-          ) {
-            return currentElement.status === req.query.status;
-          });
+          let filteredForwards = data.forwards.filter(
+            (currentElement) => currentElement.status === req.query.status
+          );
           res.status(200).json(filteredForwards);
         }
       } else res.status(200).json(data.forwards);
@@ -581,12 +579,11 @@ exports.listForwardsFilter = (req, res) => {
     throw err;
   }
   ln.on("error", connFailed);
-  var { offset, maxLen, reverse } = req.query;
+  const { offset, maxLen, reverse } = req.query;
 
   //Call the listforwards command
   ln.listforwards()
-    .then((data) => {
-      var forwards = data.forwards;
+    .then(({ forwards }) => {
       if (!offset) {
         offset = 0;
       }
@@ -641,7 +638,7 @@ exports.listForwardsFilter = (req, res) => {
 
 //Function to fetch the alias for peer
 getAliasForPeer = (peer) => {
-  return new Promise(function (resolve, reject) {
+  return new Promise((resolve) => {
     ln.listnodes({ id: peer.id })
       .then((data) => {
         peer.alias = data.nodes[0] ? data.nodes[0].alias : "";
@@ -823,7 +820,6 @@ exports.funderUpdate = (req, res) => {
     if (typeof req.body[property] === "undefined")
       clnReq[property] = req.body[property];
   }
-  //var compact_lease = (req.body.compact_lease) ? req.body.compact_lease : null;
 
   //Call the funderupdate command with the params
   global.logger.log(req.body);

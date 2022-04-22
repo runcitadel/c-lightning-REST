@@ -37,12 +37,11 @@ exports.getBalance = (req, res) => {
 
   //Call the listfunds command
   ln.listfunds()
-    .then((data) => {
-      var opArray = data.outputs;
-      var confBalance = 0;
-      var unconfBalance = 0;
-      var totalBalance = 0;
-      for (var i = 0; i < opArray.length; i++) {
+    .then(({ outputs: opArray }) => {
+      const confBalance = 0;
+      const unconfBalance = 0;
+      const totalBalance = 0;
+      for (const i = 0; i < opArray.length; i++) {
         if (opArray[i].status === "confirmed")
           confBalance = confBalance + opArray[i].value;
         else if (opArray[i].status === "unconfirmed")

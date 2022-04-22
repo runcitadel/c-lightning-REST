@@ -40,13 +40,12 @@ exports.localRemoteBal = (req, res) => {
 
   //Call the listfunds command
   ln.listfunds()
-    .then((data) => {
-      var chanArray = data.channels;
-      var localBalance = 0;
-      var remoteBalance = 0;
-      var pendingBalance = 0;
-      var inactiveBalance = 0;
-      for (var i = 0; i < chanArray.length; i++) {
+    .then(({ channels: chanArray }) => {
+      const localBalance = 0;
+      const remoteBalance = 0;
+      const pendingBalance = 0;
+      const inactiveBalance = 0;
+      for (const i = 0; i < chanArray.length; i++) {
         if (
           chanArray[i].state === "CHANNELD_NORMAL" &&
           chanArray[i].connected === true

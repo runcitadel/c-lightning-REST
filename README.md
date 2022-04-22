@@ -143,16 +143,16 @@ Encoding Options for passing macaroon in the header:
 `macaroon` set as the macaroon coverted to base64 string.
 * Sample code to convert macaroon to base64 string:
  ```
- var abc = fs.readFileSync (macaroonFile);
- var macaroon = Buffer.from(abc).toString("base64");
+ const abc = fs.readFileSync (macaroonFile);
+ const macaroon = Buffer.from(abc).toString("base64");
  ```
 #### Option 2 - hex
 * Request header:
 `macaroon` set as the macaroon coverted to hex string and `encodingtype` with value set as `hex`
 * Sample code to convert macaroon to hex string:
  ```
- var abc = fs.readFileSync (macaroonFile);
- var macaroon = Buffer.from(abc).toString("hex");
+ const abc = fs.readFileSync (macaroonFile);
+ const macaroon = Buffer.from(abc).toString("hex");
  ```
 If you need help converting your macaroon to hex format you can use the Node.js script from the Zeus project, found [here](https://github.com/ZeusLN/lnd-hex-macaroon-generator/). Alternatively, if you're running a Unix-based operating system (eg. macOS, Linux) you can run `xxd -ps -u -c 1000 /path/to/access.macaroon` to generate your macaroon in hex format.
 

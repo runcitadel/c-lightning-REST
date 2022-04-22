@@ -1,6 +1,6 @@
-var router = require("express").Router();
-var networkController = require("../controllers/network");
-var tasteMacaroon = require("../utils/tasteMacaroon");
+const router = require("express").Router();
+const networkController = require("../controllers/network");
+const tasteMacaroon = require("../utils/tasteMacaroon");
 
 //Get Route
 router.get(
