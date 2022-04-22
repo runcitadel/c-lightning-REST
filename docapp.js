@@ -1,15 +1,14 @@
 const docapp = require('express')();
-var swaggerJSDoc = require('swagger-jsdoc');
-var swaggerUi = require('swagger-ui-express');
-fs = require( 'fs' );
-api_version = require('./package.json').version;
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+const api_version = require('./package.json').version;
 
 const cdir = process.env.CL_REST_STATE_DIR ? process.env.CL_REST_STATE_DIR : __dirname;
 process.chdir(cdir);
 
-var hostdef = 'localhost:' + config.PORT;
+const hostdef = 'localhost:' + config.PORT;
 
-var swaggerDefinition = {
+const swaggerDefinition = {
     info: {
       title: 'C-Lightning-REST',
       version: api_version,
@@ -27,7 +26,7 @@ var swaggerDefinition = {
     },
   };
 
-var options = {
+  const options = {
     swaggerDefinition,
     apis: ['./controllers/*.js'],
 };

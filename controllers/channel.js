@@ -566,26 +566,26 @@ exports.listForwardsFilter = (req,res) => {
         }
         reverse = !(reverse === 'false' || reverse === false)
         //below logic will adjust last index inside the range incase they went out
-        var lastIndex = 0
-        var firstIndex = 0
-        var fill = []
+        let lastIndex = 0
+        let firstIndex = 0
+        const fill = []
         if(reverse === true && forwards.length !== 0) {
             if(offset === 0)
                 offset = forwards.length - offset;
             lastIndex = offset - 1;
             firstIndex = Math.max(0, offset-maxLen);
-            for(var i=lastIndex; i>=firstIndex; i--) {
+            for(const i=lastIndex; i>=firstIndex; i--) {
                 fill.push(forwards[i])
             }
         } else if(reverse === false && forwards.length !== 0) {
             firstIndex = (offset === 0) ? offset : (offset + 1);
             lastIndex = Math.min(forwards.length - 1, firstIndex+(maxLen-1));
-            for(var i=lastIndex; i>=firstIndex; i--) {
+            for(const i=lastIndex; i>=firstIndex; i--) {
                 fill.push(forwards[i])
             }
         }
         global.logger.log('listforwards success');
-        var response = {firstIndexOffset:firstIndex, lastIndexOffset:lastIndex, listForwards:fill }
+        const response = {firstIndexOffset:firstIndex, lastIndexOffset:lastIndex, listForwards:fill }
         res.status(200).json(response);
     }).catch(err => {
         global.logger.warn(err);
