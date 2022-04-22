@@ -87,7 +87,7 @@ exports.openChannel = (req,res) => {
     function connFailed(err) { throw err }
     ln.on('error', connFailed);
     //Set required params
-    let clnReq = { id: req.body.id, satoshi: req.body.satoshis };
+    let clnReq = { id: req.body.id, amount: req.body.satoshis };
     //Set optional params
     for (const property of ["feerate", "announce", "minconf", "utxos", "request_amt", "compact_lease", "close_to", "push_msat"]) {
         if(typeof req.body[property] === "undefined") clnReq[property] = req.body[property];
