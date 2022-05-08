@@ -18,4 +18,7 @@ router.get(
 //Decode an invoice string
 router.get("/decode/:invoiceString", tasteMacaroon, getinfoController.decode);
 
-module.exports = router;
+//List configuration options
+router.get('/listConfigs/', tasteMacaroon, getinfoController.listConfigs);
+
+module.exports  = router;
