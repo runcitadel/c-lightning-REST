@@ -2,7 +2,7 @@ const app = require('express')();
 const bodyparser = require('body-parser');
 let configFile = './cl-rest-config.json';
 const fs = require('fs');
-const { default: RpcClient } = require("c-lightning.ts/cjs/index.cjs");
+const { default: RpcClient } = require("@core-ln/core");
 
 function prepDataForLogging(msg) {
   return typeof msg === 'string' ? msg : JSON.stringify(msg)

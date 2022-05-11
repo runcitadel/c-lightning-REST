@@ -47,6 +47,31 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@core-ln/base@npm:^0.2.1-beta.1":
+  version: 0.2.1-beta.1
+  resolution: "@core-ln/base@npm:0.2.1-beta.1"
+  checksum: a0ecfa6ff399dfa439c71e5987b1db6153d7a445bad4612f6b4b2698a3640fa2c900011180b019793d58b183c23f09838ac981dda190055a10ec5939c75d34ce
+  languageName: node
+  linkType: hard
+
+"@core-ln/core@npm:^0.2.1-beta.1":
+  version: 0.2.1-beta.1
+  resolution: "@core-ln/core@npm:0.2.1-beta.1"
+  dependencies:
+    "@core-ln/base": ^0.2.1-beta.1
+  checksum: 3bbd9cf14e8f1eb7e6471bd7fbfced2c6344351c9fcf91b1975a1bb80f9147014c981ffc804f455ac60bd57c4434b164a813202e06b407d545fbfc763ba9d76c
+  languageName: node
+  linkType: hard
+
+"@core-ln/plugin@npm:^0.2.1-beta.1":
+  version: 0.2.1-beta.1
+  resolution: "@core-ln/plugin@npm:0.2.1-beta.1"
+  dependencies:
+    "@core-ln/core": ^0.2.1-beta.1
+  checksum: 7d86ba4e1c8478d4b108ce3a5c874b88dcd713388e9d6b095089f874c0af454385e6e0fc27b16f64e077d3d8498851c7523f0d72aa985557963858c841acad35
+  languageName: node
+  linkType: hard
+
 "@gar/promisify@npm:^1.0.1":
   version: 1.1.3
   resolution: "@gar/promisify@npm:1.1.3"
@@ -415,9 +440,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "c-lightning-rest@workspace:."
   dependencies:
+    "@core-ln/core": ^0.2.1-beta.1
+    "@core-ln/plugin": ^0.2.1-beta.1
     atob: ^2.1.2
     body-parser: ^1.20.0
-    c-lightning.ts: ^0.1.0-alpha.2
     chai: ^4.3.6
     chai-http: ^4.3.0
     error: ^10.4.0
@@ -432,13 +458,6 @@ __metadata:
     ws: ^8.5.0
   languageName: unknown
   linkType: soft
-
-"c-lightning.ts@npm:^0.1.0-alpha.2":
-  version: 0.1.0-alpha.2
-  resolution: "c-lightning.ts@npm:0.1.0-alpha.2"
-  checksum: 9ce78b04423ec692d166616a51bbfca396da97c188c1fb3999db1f01ea4a5ff57d71c78bf6bdbc74004e8d41fcc9411736d93e63c5e7fcec3e29ac2852ffb5c8
-  languageName: node
-  linkType: hard
 
 "cacache@npm:^15.2.0":
   version: 15.3.0

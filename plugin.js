@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const { Plugin } = require("c-lightning.ts/cjs/index.cjs");
+const { default: Plugin } = require("@core-ln/plugin");
 let srvr;
 let updatedMessage = { event: "", data: "" };
 
