@@ -639,7 +639,7 @@ exports.listForwardsFilter = (req, res) => {
 //Function to fetch the alias for peer
 getAliasForPeer = (peer) => {
   return new Promise((resolve) => {
-    ln.listnodes({ id: peer.id })
+    ln.getnode(peer.id)
       .then((data) => {
         peer.alias = data.nodes[0] ? data.nodes[0].alias : "";
         resolve(peer);
